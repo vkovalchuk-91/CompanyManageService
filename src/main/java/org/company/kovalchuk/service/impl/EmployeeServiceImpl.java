@@ -1,4 +1,4 @@
-package org.company.kovalchuk.service;
+package org.company.kovalchuk.service.impl;
 
 import org.company.kovalchuk.exception.EmployeeNotFoundException;
 import org.company.kovalchuk.exception.ProjectNotFoundException;
@@ -7,8 +7,12 @@ import org.company.kovalchuk.model.dto.EmployeeWithProjectsDto;
 import org.company.kovalchuk.repository.EmployeeLevelRepository;
 import org.company.kovalchuk.repository.EmployeeTypeRepository;
 import org.company.kovalchuk.repository.ProgrammerTypeRepository;
+import org.company.kovalchuk.service.EmployeeService;
 import org.springframework.stereotype.Service;
 import org.company.kovalchuk.repository.EmployeeRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -25,6 +29,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employeeTypeRepository = employeeTypeRepository;
         this.employeeLevelRepository = employeeLevelRepository;
         this.programmerTypeRepository = programmerTypeRepository;
+    }
+
+    @Override
+    public List<EmployeeWithProjectsDto> getAllEmployees() {
+        List<Employee> employeeList = employeeRepository.findAll();
+        return employeeList.stream()
+                .map(EmployeeWithProjectsDto::fromModel)
+                .collect(Collectors.toList());
     }
 
     @Override

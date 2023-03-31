@@ -8,6 +8,7 @@ import org.company.kovalchuk.model.Project;
 import org.company.kovalchuk.model.request.ProjectRequest;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/projects")
@@ -16,6 +17,11 @@ public class ProjectController {
 
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
+    }
+
+    @GetMapping
+    public List<ProjectWithEmployeesDto> getProject() {
+        return projectService.getAllProjects();
     }
 
     @GetMapping(value = "/{projectId:\\d+}")

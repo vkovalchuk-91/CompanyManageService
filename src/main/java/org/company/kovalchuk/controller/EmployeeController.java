@@ -7,6 +7,7 @@ import org.company.kovalchuk.model.request.EmployeeRequest;
 import org.company.kovalchuk.service.EmployeeService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/employees")
@@ -16,6 +17,11 @@ public class EmployeeController {
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
+    }
+
+    @GetMapping
+    public List<EmployeeWithProjectsDto> getEmployee() {
+        return employeeService.getAllEmployees();
     }
 
     @GetMapping(value = "/{employeeId:\\d+}")

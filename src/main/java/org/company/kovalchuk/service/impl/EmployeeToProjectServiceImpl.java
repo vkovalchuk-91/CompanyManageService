@@ -1,4 +1,4 @@
-package org.company.kovalchuk.service;
+package org.company.kovalchuk.service.impl;
 
 import org.company.kovalchuk.exception.EmployeeNotFoundException;
 import org.company.kovalchuk.exception.ProjectNotFoundException;
@@ -9,6 +9,7 @@ import org.company.kovalchuk.model.dto.EmployeeWithProjectsDto;
 import org.company.kovalchuk.model.dto.ProjectDto;
 import org.company.kovalchuk.model.dto.ProjectWithEmployeesDto;
 import org.company.kovalchuk.repository.ProjectRepository;
+import org.company.kovalchuk.service.EmployeeToProjectService;
 import org.springframework.stereotype.Service;
 import org.company.kovalchuk.repository.EmployeeRepository;
 

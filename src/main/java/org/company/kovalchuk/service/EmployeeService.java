@@ -1,10 +1,11 @@
 package org.company.kovalchuk.service;
 
-import org.company.kovalchuk.model.Employee;
-import org.company.kovalchuk.model.dto.EmployeeDto;
 import org.company.kovalchuk.model.dto.EmployeeWithProjectsDto;
 
+import java.util.List;
+
 public interface EmployeeService {
+    List<EmployeeWithProjectsDto> getAllEmployees();
     EmployeeWithProjectsDto getEmployee(long id);
 
     void createEmployee(String firstName, String lastName,
