@@ -1,8 +1,8 @@
 package org.company.kovalchuk.controller;
 
+import org.company.kovalchuk.model.dto.EmployeeWithProjectsDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.company.kovalchuk.model.Employee;
 import org.company.kovalchuk.model.request.EmployeeRequest;
 import org.company.kovalchuk.service.EmployeeService;
 
@@ -19,7 +19,7 @@ public class EmployeeController {
     }
 
     @GetMapping(value = "/{employeeId:\\d+}")
-    public Employee getEmployee(@PathVariable int employeeId) {
+    public EmployeeWithProjectsDto getEmployee(@PathVariable long employeeId) {
         return employeeService.getEmployee(employeeId);
     }
 
@@ -30,8 +30,8 @@ public class EmployeeController {
                 request.firstName,
                 request.lastName,
                 request.employeeTypeId,
-                request.programmerLevelId,
-                request.programmerTypeId
+                request.employeeLevelId,
+                request.programmerTypeId == null ? 0 : request.programmerTypeId
         );
     }
 
@@ -39,20 +39,20 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateEmployee(
             @Valid @RequestBody EmployeeRequest request,
-            @PathVariable int employeeId
+            @PathVariable long employeeId
     ) {
         employeeService.updateEmployee(
                 employeeId,
                 request.firstName,
                 request.lastName,
                 request.employeeTypeId,
-                request.programmerLevelId,
-                request.programmerTypeId
+                request.employeeLevelId,
+                request.programmerTypeId == null ? 0 : request.programmerTypeId
         );
     }
 
     @DeleteMapping(value = "/{employeeId:\\d+}")
-    public void deleteEmployee(@PathVariable int employeeId) {
+    public void deleteEmployee(@PathVariable long employeeId) {
         employeeService.deleteEmployee(employeeId);
     }
 }

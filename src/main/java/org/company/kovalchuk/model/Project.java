@@ -1,25 +1,27 @@
 package org.company.kovalchuk.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "project")
 public class Project {
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
     private String name;
-    @ManyToMany(mappedBy = "projects")
-    private Set<Employee> employees;
+    @ManyToMany(mappedBy = "projects", cascade = {CascadeType.ALL})
+    private Set<Employee> employees = new HashSet<>();
 
-    public int getId() {
+    public Project() {
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

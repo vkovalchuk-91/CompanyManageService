@@ -1,13 +1,14 @@
 package org.company.kovalchuk.service;
 
 import org.company.kovalchuk.model.Project;
+import org.company.kovalchuk.model.dto.ProjectWithEmployeesDto;
 
 public interface ProjectService {
-    Project getProject(int id);
+    ProjectWithEmployeesDto getProject(long id);
 
     void createProject(String name);
 
-    void updateProject(int id, String name);
+    void updateProject(long id, String name);
 
-    void deleteProject(int id);
+    void deleteProject(long id);
 }

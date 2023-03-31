@@ -13,8 +13,7 @@ public class EmployeeRequest {
     public Integer employeeTypeId;
     @NotNull
     @Min(1)
-    public Integer programmerLevelId;
-    @NotNull
+    public Integer employeeLevelId;
     @Min(1)
     public Integer programmerTypeId;
 }

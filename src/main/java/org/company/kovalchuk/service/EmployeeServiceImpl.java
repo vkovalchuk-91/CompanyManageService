@@ -1,42 +1,69 @@
 package org.company.kovalchuk.service;
 
 import org.company.kovalchuk.exception.EmployeeNotFoundException;
+import org.company.kovalchuk.exception.ProjectNotFoundException;
 import org.company.kovalchuk.model.Employee;
+import org.company.kovalchuk.model.dto.EmployeeWithProjectsDto;
+import org.company.kovalchuk.repository.EmployeeLevelRepository;
+import org.company.kovalchuk.repository.EmployeeTypeRepository;
+import org.company.kovalchuk.repository.ProgrammerTypeRepository;
 import org.springframework.stereotype.Service;
 import org.company.kovalchuk.repository.EmployeeRepository;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
+    private final EmployeeTypeRepository employeeTypeRepository;
+    private final EmployeeLevelRepository employeeLevelRepository;
+    private final ProgrammerTypeRepository programmerTypeRepository;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository,
+                               EmployeeTypeRepository employeeTypeRepository,
+                               EmployeeLevelRepository employeeLevelRepository,
+                               ProgrammerTypeRepository programmerTypeRepository) {
         this.employeeRepository = employeeRepository;
+        this.employeeTypeRepository = employeeTypeRepository;
+        this.employeeLevelRepository = employeeLevelRepository;
+        this.programmerTypeRepository = programmerTypeRepository;
     }
 
     @Override
-    public Employee getEmployee(int id) {
-        return employeeRepository.getEmployeeById(id)
-                .orElseThrow(() -> new EmployeeNotFoundException(id));
+    public EmployeeWithProjectsDto getEmployee(long id) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ProjectNotFoundException(id));
+        return EmployeeWithProjectsDto.fromModel(employee);
     }
 
     @Override
     public void createEmployee(String firstName, String lastName,
-                               int employeeTypeId, int programmerLevelId, int programmerTypeId) {
-        employeeRepository.insertEmployee(firstName, lastName, employeeTypeId, programmerLevelId, programmerTypeId);
+                               long employeeTypeId, long employeeLevelId, long programmerTypeId) {
+        Employee employee = new Employee();
+        addEmployeeToDB(firstName, lastName, employeeTypeId, employeeLevelId, programmerTypeId, employee);
     }
 
     @Override
-    public void updateEmployee(int id, String firstName, String lastName,
-                               int employeeTypeId, int programmerLevelId, int programmerTypeId) {
-        employeeRepository.getEmployeeById(id)
+    public void updateEmployee(long id, String firstName, String lastName,
+                               long employeeTypeId, long employeeLevelId, long programmerTypeId) {
+        Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
-        employeeRepository.updateEmployee(id, firstName, lastName, employeeTypeId, programmerLevelId, programmerTypeId);
+        addEmployeeToDB(firstName, lastName, employeeTypeId, employeeLevelId, programmerTypeId, employee);
     }
 
     @Override
-    public void deleteEmployee(int id) {
-        employeeRepository.getEmployeeById(id)
+    public void deleteEmployee(long id) {
+        Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
-        employeeRepository.deleteEmployeeById(id);
+        employeeRepository.delete(employee);
+    }
+
+    private void addEmployeeToDB(String firstName, String lastName, long employeeTypeId, long employeeLevelId, long programmerTypeId, Employee employee) {
+        employee.setFirstName(firstName);
+        employee.setLastName(lastName);
+        employee.setEmployeeType(employeeTypeRepository.getById(employeeTypeId));
+        employee.setEmployeeLevel(employeeLevelRepository.getById(employeeLevelId));
+        if (programmerTypeId != 0) {
+            employee.setProgrammerType(programmerTypeRepository.getById(programmerTypeId));
+        }
+        employeeRepository.save(employee);
     }
 }

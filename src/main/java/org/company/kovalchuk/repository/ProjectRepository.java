@@ -1,15 +1,9 @@
 package org.company.kovalchuk.repository;
 
 import org.company.kovalchuk.model.Project;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
-public interface ProjectRepository {
-    Optional<Project> getProjectById(int id);
-
-    void insertProject(String name);
-
-    void updateProject(int id, String name);
-
-    void deleteProjectById(int id);
+@Repository
+public interface ProjectRepository extends JpaRepository<Project, Long> {
 }

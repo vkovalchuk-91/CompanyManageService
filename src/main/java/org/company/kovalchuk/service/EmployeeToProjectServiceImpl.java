@@ -4,54 +4,73 @@ import org.company.kovalchuk.exception.EmployeeNotFoundException;
 import org.company.kovalchuk.exception.ProjectNotFoundException;
 import org.company.kovalchuk.model.Employee;
 import org.company.kovalchuk.model.Project;
-import org.company.kovalchuk.repository.EmployeeToProjectRepository;
+import org.company.kovalchuk.model.dto.EmployeeDto;
+import org.company.kovalchuk.model.dto.EmployeeWithProjectsDto;
+import org.company.kovalchuk.model.dto.ProjectDto;
+import org.company.kovalchuk.model.dto.ProjectWithEmployeesDto;
 import org.company.kovalchuk.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 import org.company.kovalchuk.repository.EmployeeRepository;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class EmployeeToProjectServiceImpl implements EmployeeToProjectService {
-    private final EmployeeToProjectRepository employeeToProjectRepository;
     private final EmployeeRepository employeeRepository;
     private final ProjectRepository projectRepository;
 
-    public EmployeeToProjectServiceImpl(EmployeeToProjectRepository employeeToProjectRepository,
-                                        EmployeeRepository employeeRepository,
+    public EmployeeToProjectServiceImpl(EmployeeRepository employeeRepository,
                                         ProjectRepository projectRepository) {
-        this.employeeToProjectRepository = employeeToProjectRepository;
         this.employeeRepository = employeeRepository;
         this.projectRepository = projectRepository;
     }
 
     @Override
-    public List<Employee> getEmployeesOnProject(int projectId) {
-        return employeeToProjectRepository.getEmployeesListByProjectId(projectId)
+    public List<EmployeeDto> getEmployeesOnProject(long projectId) {
+        Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(projectId));
+        return ProjectWithEmployeesDto.getEmployeeDtoListFromModel(project);
     }
 
     @Override
-    public List<Project> getEmployeeProject(int employeeId) {
-        return employeeToProjectRepository.getProjectsListByEmployeeId(employeeId)
+    public List<ProjectDto> getEmployeeProject(long employeeId) {
+        Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new EmployeeNotFoundException(employeeId));
+        return EmployeeWithProjectsDto.getProjectDtoListFromModel(employee);
     }
 
     @Override
-    public void addEmployeeToProject(int employeeId, int projectId) {
-        projectRepository.getProjectById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(projectId));
-        employeeRepository.getEmployeeById(employeeId)
+    public void addEmployeeToProject(long employeeId, long projectId) {
+        Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new EmployeeNotFoundException(employeeId));
-        employeeToProjectRepository.addEmployeeToProjectByIds(employeeId, projectId);
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException(projectId));
+
+        Set<Employee> projectEmployees = project.getEmployees();
+        projectEmployees.add(employee);
+
+        Set<Project> employeeProjects = employee.getProjects();
+        employeeProjects.add(project);
+
+        projectRepository.save(project);
+        employeeRepository.save(employee);
     }
 
     @Override
-    public void deleteEmployeeFromProject(int employeeId, int projectId) {
-        projectRepository.getProjectById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(projectId));
-        employeeRepository.getEmployeeById(employeeId)
+    public void deleteEmployeeFromProject(long employeeId, long projectId) {
+        Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new EmployeeNotFoundException(employeeId));
-        employeeToProjectRepository.deleteEmployeeFromProjectByIds(employeeId, projectId);
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException(projectId));
+
+        Set<Employee> projectEmployees = project.getEmployees();
+        projectEmployees.remove(employee);
+
+        Set<Project> employeeProjects = employee.getProjects();
+        employeeProjects.remove(project);
+
+        projectRepository.save(project);
+        employeeRepository.save(employee);
     }
 }

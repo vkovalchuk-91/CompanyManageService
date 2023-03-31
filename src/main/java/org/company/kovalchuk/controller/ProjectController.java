@@ -1,5 +1,6 @@
 package org.company.kovalchuk.controller;
 
+import org.company.kovalchuk.model.dto.ProjectWithEmployeesDto;
 import org.company.kovalchuk.service.ProjectService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class ProjectController {
     }
 
     @GetMapping(value = "/{projectId:\\d+}")
-    public Project getProject(@PathVariable int projectId) {
+    public ProjectWithEmployeesDto getProject(@PathVariable long projectId) {
         return projectService.getProject(projectId);
     }
 
@@ -32,13 +33,13 @@ public class ProjectController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateProject(
             @Valid @RequestBody ProjectRequest request,
-            @PathVariable int projectId
+            @PathVariable long projectId
     ) {
         projectService.updateProject(projectId, request.name);
     }
 
     @DeleteMapping(value = "/{projectId:\\d+}")
-    public void deleteProject(@PathVariable int projectId) {
+    public void deleteProject(@PathVariable long projectId) {
         projectService.deleteProject(projectId);
     }
 }

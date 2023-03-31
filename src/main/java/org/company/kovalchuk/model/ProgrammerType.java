@@ -1,21 +1,21 @@
 package org.company.kovalchuk.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "programmer_type")
 public class ProgrammerType {
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
+    @Column(name = "programmer_type_name")
     private String name;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

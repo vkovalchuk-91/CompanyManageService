@@ -1,9 +1,9 @@
 package org.company.kovalchuk.exception;
 
 public class ProjectNotFoundException extends RuntimeException {
-    private final int projectId;
+    private final long projectId;
 
-    public ProjectNotFoundException(int projectId) {
+    public ProjectNotFoundException(long projectId) {
         this.projectId = projectId;
     }
 

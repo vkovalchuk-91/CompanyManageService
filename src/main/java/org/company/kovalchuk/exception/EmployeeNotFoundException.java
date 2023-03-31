@@ -1,9 +1,9 @@
 package org.company.kovalchuk.exception;
 
 public class EmployeeNotFoundException extends RuntimeException {
-    private final int employeeId;
+    private final long employeeId;
 
-    public EmployeeNotFoundException(int employeeId) {
+    public EmployeeNotFoundException(long employeeId) {
         this.employeeId = employeeId;
     }
 

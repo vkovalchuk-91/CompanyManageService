@@ -1,9 +1,9 @@
 package org.company.kovalchuk.repository;
 
-import org.company.kovalchuk.model.Employee;
+import org.company.kovalchuk.model.ProgrammerType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+public interface ProgrammerTypeRepository extends JpaRepository<ProgrammerType, Long> {
 }

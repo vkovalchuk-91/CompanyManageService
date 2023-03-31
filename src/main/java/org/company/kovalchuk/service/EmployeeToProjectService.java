@@ -1,13 +1,13 @@
 package org.company.kovalchuk.service;
 
-import org.company.kovalchuk.model.Employee;
-import org.company.kovalchuk.model.Project;
+import org.company.kovalchuk.model.dto.EmployeeDto;
+import org.company.kovalchuk.model.dto.ProjectDto;
 
 import java.util.List;
 
 public interface EmployeeToProjectService {
-    List<Employee> getEmployeesOnProject(int projectId);
-    List<Project> getEmployeeProject(int employeeId);
-    void addEmployeeToProject(int employeeId, int projectId);
-    void deleteEmployeeFromProject(int employeeId, int projectId);
+    List<EmployeeDto> getEmployeesOnProject(long projectId);
+    List<ProjectDto> getEmployeeProject(long employeeId);
+    void addEmployeeToProject(long employeeId, long projectId);
+    void deleteEmployeeFromProject(long employeeId, long projectId);
 }

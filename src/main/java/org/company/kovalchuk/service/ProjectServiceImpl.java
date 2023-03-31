@@ -2,6 +2,7 @@ package org.company.kovalchuk.service;
 
 import org.company.kovalchuk.exception.ProjectNotFoundException;
 import org.company.kovalchuk.model.Project;
+import org.company.kovalchuk.model.dto.ProjectWithEmployeesDto;
 import org.company.kovalchuk.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,27 +15,31 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project getProject(int id) {
-        return projectRepository.getProjectById(id)
+    public ProjectWithEmployeesDto getProject(long id) {
+        Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ProjectNotFoundException(id));
+        return ProjectWithEmployeesDto.fromModel(project);
     }
 
     @Override
     public void createProject(String name) {
-        projectRepository.insertProject(name);
+        Project project = new Project();
+        project.setName(name);
+        projectRepository.save(project);
     }
 
     @Override
-    public void updateProject(int id, String name) {
-        projectRepository.getProjectById(id)
+    public void updateProject(long id, String name) {
+        Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ProjectNotFoundException(id));
-        projectRepository.updateProject(id, name);
+        project.setName(name);
+        projectRepository.save(project);
     }
 
     @Override
-    public void deleteProject(int id) {
-        projectRepository.getProjectById(id)
+    public void deleteProject(long id) {
+        Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ProjectNotFoundException(id));
-        projectRepository.deleteProjectById(id);
+        projectRepository.delete(project);
     }
 }

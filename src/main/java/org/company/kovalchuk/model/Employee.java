@@ -1,9 +1,11 @@
 package org.company.kovalchuk.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "employee")
 public class Employee {
     @Id
     @GeneratedValue
@@ -25,13 +27,16 @@ public class Employee {
             name = "employee_project",
             joinColumns = {@JoinColumn(name = "employee_id")},
             inverseJoinColumns = {@JoinColumn(name = "project_id")})
-    private Set<Project> projects;
+    private Set<Project> projects = new HashSet<>();
+
+    public Employee() {
+    }
 
     public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -81,5 +86,4 @@ public class Employee {
 
     public void setProgrammerType(ProgrammerType programmerType) {
         this.programmerType = programmerType;
-    }
-}
+    }}
