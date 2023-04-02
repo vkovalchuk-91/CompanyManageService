@@ -18,7 +18,7 @@ public class EmployeeToTeamToProjectController {
         this.employeeToTeamToProjectService = employeeToProjectService;
     }
 
-    @GetMapping(value = "/teams/{teamId:\\d+}/projects")
+    @GetMapping(value = "/teams/{teamId:\\d+}/employees")
     public List<EmployeeDto> getEmployeesInTeam(@PathVariable long teamId) {
         return employeeToTeamToProjectService.getEmployeesInTeam(teamId);
     }
@@ -40,23 +40,23 @@ public class EmployeeToTeamToProjectController {
 
     @PostMapping(value = "/employees/{employeeId:\\d+}/teams/{teamId:\\d+}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addEmployeeToTeam(@PathVariable int employeeId, @PathVariable int teamId) {
+    public void addEmployeeToTeam(@PathVariable long employeeId, @PathVariable long teamId) {
         employeeToTeamToProjectService.addEmployeeToTeam(employeeId, teamId);
     }
 
     @DeleteMapping(value = "/employees/{employeeId:\\d+}/teams/{teamId:\\d+}")
-    public void deleteEmployeeFromTeam(@PathVariable int employeeId, @PathVariable int teamId) {
+    public void deleteEmployeeFromTeam(@PathVariable long employeeId, @PathVariable long teamId) {
         employeeToTeamToProjectService.deleteEmployeeFromTeam(employeeId, teamId);
     }
 
     @PostMapping(value = "/teams/{teamId:\\d+}/projects/{projectId:\\d+}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addTeamToProject(@PathVariable int teamId, @PathVariable int projectId) {
+    public void addTeamToProject(@PathVariable long teamId, @PathVariable long projectId) {
         employeeToTeamToProjectService.addTeamToProject(teamId, projectId);
     }
 
     @DeleteMapping(value = "/teams/{teamId:\\d+}/projects/{projectId:\\d+}")
-    public void deleteTeamFromProject(@PathVariable int teamId, @PathVariable int projectId) {
+    public void deleteTeamFromProject(@PathVariable long teamId, @PathVariable long projectId) {
         employeeToTeamToProjectService.deleteTeamFromProject(teamId, projectId);
     }
 }
