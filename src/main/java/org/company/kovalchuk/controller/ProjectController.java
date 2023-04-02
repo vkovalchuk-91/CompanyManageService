@@ -1,10 +1,9 @@
 package org.company.kovalchuk.controller;
 
-import org.company.kovalchuk.model.dto.ProjectWithEmployeesDto;
+import org.company.kovalchuk.model.dto.ProjectWithTeamsDto;
 import org.company.kovalchuk.service.ProjectService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.company.kovalchuk.model.Project;
 import org.company.kovalchuk.model.request.ProjectRequest;
 
 import javax.validation.Valid;
@@ -20,12 +19,12 @@ public class ProjectController {
     }
 
     @GetMapping
-    public List<ProjectWithEmployeesDto> getProject() {
+    public List<ProjectWithTeamsDto> getProject() {
         return projectService.getAllProjects();
     }
 
     @GetMapping(value = "/{projectId:\\d+}")
-    public ProjectWithEmployeesDto getProject(@PathVariable long projectId) {
+    public ProjectWithTeamsDto getProject(@PathVariable long projectId) {
         return projectService.getProject(projectId);
     }
 

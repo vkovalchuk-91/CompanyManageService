@@ -2,12 +2,12 @@ package org.company.kovalchuk.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.company.kovalchuk.model.Employee;
-import org.company.kovalchuk.model.Project;
+import org.company.kovalchuk.model.Team;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeWithProjectsDto {
+public class EmployeeWithTeamsDto {
     @JsonProperty("firstName")
     private String firstName;
     @JsonProperty("lastName")
@@ -18,8 +18,8 @@ public class EmployeeWithProjectsDto {
     private String employeeLevel;
     @JsonProperty("programmerType")
     private String programmerType;
-    @JsonProperty("projects")
-    private List<ProjectDto> projects;
+    @JsonProperty("teams")
+    private List<TeamDto> teams;
 
     public String getFirstName() {
         return firstName;
@@ -61,38 +61,38 @@ public class EmployeeWithProjectsDto {
         this.programmerType = programmerType;
     }
 
-    public List<ProjectDto> getProjects() {
-        return projects;
+    public List<TeamDto> getTeams() {
+        return teams;
     }
 
-    public void setProjects(List<ProjectDto> projects) {
-        this.projects = projects;
+    public void setTeams(List<TeamDto> teams) {
+        this.teams = teams;
     }
 
-    public static EmployeeWithProjectsDto fromModel(Employee employee) {
-        EmployeeWithProjectsDto dto = new EmployeeWithProjectsDto();
+    public static EmployeeWithTeamsDto fromModel(Employee employee) {
+        EmployeeWithTeamsDto dto = new EmployeeWithTeamsDto();
         dto.setFirstName(employee.getFirstName());
         dto.setLastName(employee.getLastName());
         dto.setEmployeeType(employee.getEmployeeType().getName());
         dto.setEmployeeLevel(employee.getEmployeeLevel().getName());
         dto.setProgrammerType(employee.getProgrammerType() == null ? "" : employee.getProgrammerType().getName());
 
-        List<ProjectDto> projectDtos = new ArrayList<>();
-        for (Project project : employee.getProjects()) {
-            projectDtos.add(ProjectDto.fromModel(project));
+        List<TeamDto> teamDtosDtos = new ArrayList<>();
+        for (Team team : employee.getTeams()) {
+            teamDtosDtos.add(TeamDto.fromModel(team));
         }
-        dto.setProjects(projectDtos);
+        dto.setTeams(teamDtosDtos);
 
         return dto;
     }
 
-    public static List<ProjectDto> getProjectDtoListFromModel(Employee employee) {
-        List<ProjectDto> projectDtoList = new ArrayList<>();
+    public static List<TeamDto> getTeamDtoListFromModel(Employee employee) {
+        List<TeamDto> teamDtos = new ArrayList<>();
 
-        for (Project project : employee.getProjects()) {
-            projectDtoList.add(ProjectDto.fromModel(project));
+        for (Team team : employee.getTeams()) {
+            teamDtos.add(TeamDto.fromModel(team));
         }
 
-        return projectDtoList;
+        return teamDtos;
     }
 }

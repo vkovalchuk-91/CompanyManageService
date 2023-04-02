@@ -1,10 +1,8 @@
 package org.company.kovalchuk.service.impl;
 
 import org.company.kovalchuk.exception.ProjectNotFoundException;
-import org.company.kovalchuk.model.Employee;
 import org.company.kovalchuk.model.Project;
-import org.company.kovalchuk.model.dto.EmployeeWithProjectsDto;
-import org.company.kovalchuk.model.dto.ProjectWithEmployeesDto;
+import org.company.kovalchuk.model.dto.ProjectWithTeamsDto;
 import org.company.kovalchuk.repository.ProjectRepository;
 import org.company.kovalchuk.service.ProjectService;
 import org.springframework.stereotype.Service;
@@ -21,18 +19,18 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectWithEmployeesDto> getAllProjects() {
+    public List<ProjectWithTeamsDto> getAllProjects() {
         List<Project> projectList = projectRepository.findAll();
         return projectList.stream()
-                .map(ProjectWithEmployeesDto::fromModel)
+                .map(ProjectWithTeamsDto::fromModel)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ProjectWithEmployeesDto getProject(long id) {
+    public ProjectWithTeamsDto getProject(long id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ProjectNotFoundException(id));
-        return ProjectWithEmployeesDto.fromModel(project);
+        return ProjectWithTeamsDto.fromModel(project);
     }
 
     @Override

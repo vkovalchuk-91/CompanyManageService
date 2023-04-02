@@ -1,6 +1,6 @@
 package org.company.kovalchuk.controller;
 
-import org.company.kovalchuk.model.dto.EmployeeWithProjectsDto;
+import org.company.kovalchuk.model.dto.EmployeeWithTeamsDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.company.kovalchuk.model.request.EmployeeRequest;
@@ -20,12 +20,12 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeWithProjectsDto> getEmployee() {
+    public List<EmployeeWithTeamsDto> getEmployee() {
         return employeeService.getAllEmployees();
     }
 
     @GetMapping(value = "/{employeeId:\\d+}")
-    public EmployeeWithProjectsDto getEmployee(@PathVariable long employeeId) {
+    public EmployeeWithTeamsDto getEmployee(@PathVariable long employeeId) {
         return employeeService.getEmployee(employeeId);
     }
 

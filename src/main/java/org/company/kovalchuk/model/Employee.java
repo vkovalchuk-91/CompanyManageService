@@ -24,10 +24,10 @@ public class Employee {
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
-            name = "employee_project",
+            name = "employee_to_team",
             joinColumns = {@JoinColumn(name = "employee_id")},
-            inverseJoinColumns = {@JoinColumn(name = "project_id")})
-    private Set<Project> projects = new HashSet<>();
+            inverseJoinColumns = {@JoinColumn(name = "team_id")})
+    private Set<Team> teams = new HashSet<>();
 
     public Employee() {
     }
@@ -56,12 +56,12 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public Set<Project> getProjects() {
-        return projects;
+    public Set<Team> getTeams() {
+        return teams;
     }
 
-    public void setProjects(Set<Project> projects) {
-        this.projects = projects;
+    public void setTeams(Set<Team> teams) {
+        this.teams = teams;
     }
 
     public EmployeeType getEmployeeType() {

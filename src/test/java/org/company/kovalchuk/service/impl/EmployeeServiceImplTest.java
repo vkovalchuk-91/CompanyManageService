@@ -4,7 +4,7 @@ import org.company.kovalchuk.model.Employee;
 import org.company.kovalchuk.model.EmployeeLevel;
 import org.company.kovalchuk.model.EmployeeType;
 import org.company.kovalchuk.model.ProgrammerType;
-import org.company.kovalchuk.model.dto.EmployeeWithProjectsDto;
+import org.company.kovalchuk.model.dto.EmployeeWithTeamsDto;
 import org.company.kovalchuk.repository.EmployeeRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -50,7 +50,7 @@ public class EmployeeServiceImplTest {
         employee.setProgrammerType(programmerType);
         Mockito.when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
 
-        EmployeeWithProjectsDto result = employeeService.getEmployee(employeeId);
+        EmployeeWithTeamsDto result = employeeService.getEmployee(employeeId);
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals("Ivan", result.getFirstName());

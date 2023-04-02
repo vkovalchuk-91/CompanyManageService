@@ -3,7 +3,7 @@ package org.company.kovalchuk.service.impl;
 import org.company.kovalchuk.exception.EmployeeNotFoundException;
 import org.company.kovalchuk.exception.ProjectNotFoundException;
 import org.company.kovalchuk.model.Employee;
-import org.company.kovalchuk.model.dto.EmployeeWithProjectsDto;
+import org.company.kovalchuk.model.dto.EmployeeWithTeamsDto;
 import org.company.kovalchuk.repository.EmployeeLevelRepository;
 import org.company.kovalchuk.repository.EmployeeTypeRepository;
 import org.company.kovalchuk.repository.ProgrammerTypeRepository;
@@ -32,18 +32,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeWithProjectsDto> getAllEmployees() {
+    public List<EmployeeWithTeamsDto> getAllEmployees() {
         List<Employee> employeeList = employeeRepository.findAll();
         return employeeList.stream()
-                .map(EmployeeWithProjectsDto::fromModel)
+                .map(EmployeeWithTeamsDto::fromModel)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public EmployeeWithProjectsDto getEmployee(long id) {
+    public EmployeeWithTeamsDto getEmployee(long id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ProjectNotFoundException(id));
-        return EmployeeWithProjectsDto.fromModel(employee);
+        return EmployeeWithTeamsDto.fromModel(employee);
     }
 
     @Override

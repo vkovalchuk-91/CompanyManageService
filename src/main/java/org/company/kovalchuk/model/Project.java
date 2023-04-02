@@ -12,7 +12,7 @@ public class Project {
     private long id;
     private String name;
     @ManyToMany(mappedBy = "projects", cascade = {CascadeType.ALL})
-    private Set<Employee> employees = new HashSet<>();
+    private Set<Team> teams = new HashSet<>();
 
     public Project() {
     }
@@ -33,11 +33,11 @@ public class Project {
         this.name = name;
     }
 
-    public Set<Employee> getEmployees() {
-        return employees;
+    public Set<Team> getTeams() {
+        return teams;
     }
 
-    public void setEmployees(Set<Employee> employees) {
-        this.employees = employees;
+    public void setTeams(Set<Team> employees) {
+        this.teams = employees;
     }
 }
