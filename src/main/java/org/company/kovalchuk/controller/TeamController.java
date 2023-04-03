@@ -4,6 +4,8 @@ import org.company.kovalchuk.model.dto.TeamWithEmployeesDtoAndProjectDto;
 import org.company.kovalchuk.model.request.TeamRequest;
 import org.company.kovalchuk.service.TeamService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,24 +21,28 @@ public class TeamController {
     }
 
     @GetMapping
-    public List<TeamWithEmployeesDtoAndProjectDto> getTeam() {
-        return teamService.getAllTeams();
+    public ResponseEntity<List<TeamWithEmployeesDtoAndProjectDto>> handleGetAllTeams() {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(teamService.getAllTeams());
     }
 
     @GetMapping(value = "/{teamId:\\d+}")
-    public TeamWithEmployeesDtoAndProjectDto getTeam(@PathVariable long teamId) {
-        return teamService.getTeam(teamId);
+    public ResponseEntity<TeamWithEmployeesDtoAndProjectDto> handleGetTeam(@PathVariable long teamId) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(teamService.getTeam(teamId));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTeam(@Valid @RequestBody TeamRequest request) {
+    public void handleCreateTeam(@Valid @RequestBody TeamRequest request) {
         teamService.createTeam(request.name);
     }
 
     @PutMapping(value = "/{teamId:\\d+}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateTeam(
+    @ResponseStatus(HttpStatus.OK)
+    public void handleUpdateTeam(
             @Valid @RequestBody TeamRequest request,
             @PathVariable long teamId
     ) {
@@ -44,7 +50,8 @@ public class TeamController {
     }
 
     @DeleteMapping(value = "/{teamId:\\d+}")
-    public void deleteTeam(@PathVariable long teamId) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void handleDeleteTeam(@PathVariable long teamId) {
         teamService.deleteTeam(teamId);
     }
 }

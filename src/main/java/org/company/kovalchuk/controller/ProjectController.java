@@ -3,6 +3,8 @@ package org.company.kovalchuk.controller;
 import org.company.kovalchuk.model.dto.ProjectWithTeamsDto;
 import org.company.kovalchuk.service.ProjectService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.company.kovalchuk.model.request.ProjectRequest;
 
@@ -19,24 +21,28 @@ public class ProjectController {
     }
 
     @GetMapping
-    public List<ProjectWithTeamsDto> getProject() {
-        return projectService.getAllProjects();
+    public ResponseEntity<List<ProjectWithTeamsDto>> handleGetAllProjects() {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(projectService.getAllProjects());
     }
 
     @GetMapping(value = "/{projectId:\\d+}")
-    public ProjectWithTeamsDto getProject(@PathVariable long projectId) {
-        return projectService.getProject(projectId);
+    public ResponseEntity<ProjectWithTeamsDto> handleGetProject(@PathVariable long projectId) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(projectService.getProject(projectId));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProject(@Valid @RequestBody ProjectRequest request) {
+    public void handleCreateProject(@Valid @RequestBody ProjectRequest request) {
         projectService.createProject(request.name);
     }
 
     @PutMapping(value = "/{projectId:\\d+}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateProject(
+    @ResponseStatus(HttpStatus.OK)
+    public void handleUpdateProject(
             @Valid @RequestBody ProjectRequest request,
             @PathVariable long projectId
     ) {
@@ -44,7 +50,8 @@ public class ProjectController {
     }
 
     @DeleteMapping(value = "/{projectId:\\d+}")
-    public void deleteProject(@PathVariable long projectId) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void handleDeleteProject(@PathVariable long projectId) {
         projectService.deleteProject(projectId);
     }
 }

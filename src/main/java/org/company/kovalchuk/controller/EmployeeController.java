@@ -2,6 +2,8 @@ package org.company.kovalchuk.controller;
 
 import org.company.kovalchuk.model.dto.EmployeeWithTeamsDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.company.kovalchuk.model.request.EmployeeRequest;
 import org.company.kovalchuk.service.EmployeeService;
@@ -20,45 +22,50 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeWithTeamsDto> getEmployee() {
-        return employeeService.getAllEmployees();
+    public ResponseEntity<List<EmployeeWithTeamsDto>> handleGetAllEmployees() {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(employeeService.getAllEmployees());
     }
 
     @GetMapping(value = "/{employeeId:\\d+}")
-    public EmployeeWithTeamsDto getEmployee(@PathVariable long employeeId) {
-        return employeeService.getEmployee(employeeId);
+    public ResponseEntity<EmployeeWithTeamsDto> handleGetEmployee(@PathVariable long employeeId) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(employeeService.getEmployee(employeeId));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createEmployee(@Valid @RequestBody EmployeeRequest request) {
+    public void handleCreateEmployee(@Valid @RequestBody EmployeeRequest employeeRequest) {
         employeeService.createEmployee(
-                request.firstName,
-                request.lastName,
-                request.employeeTypeId,
-                request.employeeLevelId,
-                request.programmerTypeId == null ? 0 : request.programmerTypeId
+                employeeRequest.firstName,
+                employeeRequest.lastName,
+                employeeRequest.employeeTypeId,
+                employeeRequest.employeeLevelId,
+                employeeRequest.programmerTypeId == null ? 0 : employeeRequest.programmerTypeId
         );
     }
 
     @PutMapping(value = "/{employeeId:\\d+}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateEmployee(
-            @Valid @RequestBody EmployeeRequest request,
+    @ResponseStatus(HttpStatus.OK)
+    public void handleUpdateEmployee(
+            @Valid @RequestBody EmployeeRequest employeeRequest,
             @PathVariable long employeeId
     ) {
         employeeService.updateEmployee(
                 employeeId,
-                request.firstName,
-                request.lastName,
-                request.employeeTypeId,
-                request.employeeLevelId,
-                request.programmerTypeId == null ? 0 : request.programmerTypeId
+                employeeRequest.firstName,
+                employeeRequest.lastName,
+                employeeRequest.employeeTypeId,
+                employeeRequest.employeeLevelId,
+                employeeRequest.programmerTypeId == null ? 0 : employeeRequest.programmerTypeId
         );
     }
 
     @DeleteMapping(value = "/{employeeId:\\d+}")
-    public void deleteEmployee(@PathVariable long employeeId) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void handleDeleteEmployee(@PathVariable long employeeId) {
         employeeService.deleteEmployee(employeeId);
     }
 }

@@ -50,7 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void createEmployee(String firstName, String lastName,
                                long employeeTypeId, long employeeLevelId, long programmerTypeId) {
         Employee employee = new Employee();
-        addEmployeeToDB(firstName, lastName, employeeTypeId, employeeLevelId, programmerTypeId, employee);
+        saveEmployeeToDB(firstName, lastName, employeeTypeId, employeeLevelId, programmerTypeId, employee);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                                long employeeTypeId, long employeeLevelId, long programmerTypeId) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
-        addEmployeeToDB(firstName, lastName, employeeTypeId, employeeLevelId, programmerTypeId, employee);
+        saveEmployeeToDB(firstName, lastName, employeeTypeId, employeeLevelId, programmerTypeId, employee);
     }
 
     @Override
@@ -68,13 +68,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.delete(employee);
     }
 
-    private void addEmployeeToDB(String firstName, String lastName, long employeeTypeId, long employeeLevelId, long programmerTypeId, Employee employee) {
+    private void saveEmployeeToDB(String firstName, String lastName,
+                                  long employeeTypeId, long employeeLevelId, long programmerTypeId, Employee employee) {
         employee.setFirstName(firstName);
         employee.setLastName(lastName);
         employee.setEmployeeType(employeeTypeRepository.getById(employeeTypeId));
         employee.setEmployeeLevel(employeeLevelRepository.getById(employeeLevelId));
         if (programmerTypeId != 0) {
             employee.setProgrammerType(programmerTypeRepository.getById(programmerTypeId));
+        } else {
+            employee.setProgrammerType(null);
         }
         employeeRepository.save(employee);
     }
